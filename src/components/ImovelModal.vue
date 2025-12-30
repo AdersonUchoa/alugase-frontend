@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="modal-overlay" @click="closeModal">
+  <div v-if="isOpen" class="modal-overlay">
     <div class="modal-content" @click.stop>
       <div class="modal-header">
         <h2>{{ isEditMode ? 'Editar Imóvel' : 'Novo Imóvel' }}</h2>

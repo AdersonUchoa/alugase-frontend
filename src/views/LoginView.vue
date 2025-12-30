@@ -83,7 +83,7 @@ const credentials = reactive({
 })
 
 onMounted(() => {
-  console.log('🏠 Tela de Login carregada')
+
 })
 
 const handleLogin = async () => {
@@ -92,11 +92,8 @@ const handleLogin = async () => {
     return
   }
 
-  console.log('🔐 Tentando fazer login com:', credentials.login)
-
   try {
     await authStore.login(credentials)
-    console.log('✅ Redirecionando para home...')
   } catch (error) {
     console.error('❌ Falha no login: ', error)
   }

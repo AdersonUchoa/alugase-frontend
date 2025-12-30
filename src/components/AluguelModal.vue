@@ -222,7 +222,6 @@ const imovelSearch = ref('')
 const showInquilinoDropdown = ref(false)
 const showImovelDropdown = ref(false)
 
-// Modais inline
 const showInquilinoModal = ref(false)
 const showImovelModal = ref(false)
 
@@ -263,7 +262,6 @@ onMounted(() => {
   loadStatusAluguel()
 })
 
-// Carrega listas de imóveis e inquilinos
 const loadSelectData = async () => {
   try {
     loadingData.value = true
@@ -328,7 +326,6 @@ const selectImovel = (imovel) => {
   showImovelDropdown.value = false
 }
 
-// Funções dos modais inline
 const openInquilinoModal = () => {
   showInquilinoModal.value = true
   showInquilinoDropdown.value = false
@@ -376,7 +373,6 @@ const resetForm = () => {
   showInquilinoDropdown.value = false
   showImovelDropdown.value = false
   error.value = ''
-  // Fechar modais inline ao resetar
   showInquilinoModal.value = false
   showImovelModal.value = false
 }
@@ -397,7 +393,6 @@ watch(
     if (newValue) {
       loadSelectData()
     } else {
-      // Quando fechar o modal principal, fechar os modais inline também
       showInquilinoModal.value = false
       showImovelModal.value = false
     }
@@ -504,9 +499,7 @@ const handleSubmit = async () => {
       metodoDePagamento: formData.value.metodoDePagamento,
       status: formData.value.status,
     }
-
-    console.log('📤 Enviando payload:', payload)
-
+    
     let response
     if (isEditMode.value) {
       response = await aluguelAPI.update(props.aluguel.id, payload)

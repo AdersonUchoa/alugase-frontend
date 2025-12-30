@@ -153,12 +153,6 @@ const loadDashboardData = async () => {
     if (alugueisRes.data.success) {
       aluguelCounts.value = alugueisRes.data.data
     }
-
-    console.log('📊 Dashboard carregado:', {
-      imovelCounts: imovelCounts.value,
-      inquilinoCounts: inquilinoCounts.value,
-      aluguelCounts: aluguelCounts.value,
-    })
   } catch (error) {
     console.error('❌ Erro ao carregar dashboard:', error)
   } finally {

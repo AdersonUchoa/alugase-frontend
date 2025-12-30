@@ -228,7 +228,6 @@ const loadAlugueis = async () => {
     
     if (response.data.success) {
       alugueis.value = response.data.data
-      console.log('✅ Aluguéis do imóvel carregados:', alugueis.value.length)
     }
   } catch (error) {
     console.error('Erro ao carregar aluguéis:', error)
@@ -312,8 +311,6 @@ const verificarDisponibilidade = async () => {
   try {
     loadingDisponibilidade.value = true
     resultadoDisponibilidade.value = null
-
-    console.log('🔍 Verificando disponibilidade para:', dataVerificacao.value)
     
     const response = await imovelAPI.checkDisponibilidade(
       route.params.id, 
@@ -322,7 +319,6 @@ const verificarDisponibilidade = async () => {
 
     if (response.data.success) {
       resultadoDisponibilidade.value = response.data.data
-      console.log('✅ Resultado:', resultadoDisponibilidade.value)
     } else {
       alert(response.data.message || 'Erro ao verificar disponibilidade')
     }

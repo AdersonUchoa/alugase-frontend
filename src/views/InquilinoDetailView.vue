@@ -174,7 +174,6 @@ const loadAlugueis = async () => {
     
     if (response.data.success) {
       alugueis.value = response.data.data
-      console.log('✅ Aluguéis do inquilino carregados:', alugueis.value.length)
     }
   } catch (error) {
     console.error('Erro ao carregar aluguéis:', error)

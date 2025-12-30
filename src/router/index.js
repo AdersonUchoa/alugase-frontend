@@ -67,11 +67,9 @@ const router = createRouter({
   ]
 })
 
-// Guard de navegação
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
-  // Verifica autenticação apenas uma vez
   if (authStore.token && !authStore.isAuthenticated) {
     authStore.checkAuth()
   }

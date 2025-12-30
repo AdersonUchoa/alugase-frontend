@@ -9,7 +9,6 @@ const api = axios.create({
   },
 })
 
-// Interceptor para adicionar token nas requisições
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
@@ -23,31 +22,22 @@ api.interceptors.request.use(
   },
 )
 
-// Interceptor para DEBUG - ver requisições no console
 api.interceptors.request.use((config) => {
-  console.log('🚀 Fazendo requisição:', config.method.toUpperCase(), config.url)
-  console.log('📦 Dados enviados:', config.data)
   return config
 })
 
-// Interceptor para DEBUG - ver respostas no console
 api.interceptors.response.use(
   (response) => {
-    console.log('✅ Resposta recebida:', response.status)
-    console.log('📥 Dados:', response.data)
     return response
   },
   (error) => {
     console.error('❌ Erro na requisição:', error.response?.status)
     console.error('📛 Detalhes:', error.response?.data)
 
-    // Verificar se o erro é 401 (Não autorizado - token inválido/expirado)
     if (error.response?.status === 401) {
-      console.log('🔒 Token expirado ou inválido. Fazendo logout...')
       const authStore = useAuthStore()
       authStore.logout()
 
-      // Redirecionar para login se não estiver já lá
       if (router.currentRoute.value.path !== '/login') {
         router.push('/login')
       }

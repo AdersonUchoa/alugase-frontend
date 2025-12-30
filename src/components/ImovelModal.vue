@@ -102,7 +102,6 @@ const formData = ref({
   descricao: '',
 })
 
-// Carrega tipos de imóvel
 const loadTiposImovel = async () => {
   try {
     const response = await enumsAPI.getTiposImovel()
@@ -118,7 +117,6 @@ onMounted(() => {
   loadTiposImovel()
 })
 
-// Declara resetForm ANTES do watch
 const resetForm = () => {
   formData.value = {
     nome: '',
@@ -129,7 +127,6 @@ const resetForm = () => {
   error.value = ''
 }
 
-// Observa mudanças no prop imovel
 watch(
   () => props.imovel,
   (newImovel) => {

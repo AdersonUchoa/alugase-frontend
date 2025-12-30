@@ -238,7 +238,6 @@ const loadAluguel = async () => {
 
     if (response.data.success) {
       aluguel.value = response.data.data
-      console.log('✅ Aluguel carregado:', aluguel.value)
     } else {
       alert('Aluguel não encontrado')
       router.push('/alugueis')

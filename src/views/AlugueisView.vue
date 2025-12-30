@@ -240,7 +240,6 @@ const loadAlugueis = async () => {
     if (response.data.success) {
       alugueis.value = response.data.data.items || response.data.data
       totalPages.value = response.data.data.totalPages || 1
-      console.log('✅ Aluguéis carregados:', alugueis.value.length)
     }
   } catch (error) {
     console.error('❌ Erro ao carregar aluguéis:', error)

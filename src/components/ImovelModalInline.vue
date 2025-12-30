@@ -103,7 +103,6 @@ const formData = ref({
   descricao: ''
 })
 
-// Carrega tipos de imóvel da API
 const loadTiposImovel = async () => {
   try {
     const response = await enumsAPI.getTiposImovel()

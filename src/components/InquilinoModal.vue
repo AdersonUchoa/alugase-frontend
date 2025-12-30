@@ -151,17 +151,14 @@ const formData = ref({
   endereco: ''
 })
 
-// Função para formatar CPF enquanto digita
 const handleCPFInput = (e) => {
   formData.value.cpf = formatCPF(e.target.value)
 }
 
-// Função para formatar telefone enquanto digita
 const handleTelefoneInput = (e) => {
   formData.value.telefone = formatPhone(e.target.value)
 }
 
-// Reset do formulário
 const resetForm = () => {
   formData.value = {
     nome: '',
@@ -174,16 +171,14 @@ const resetForm = () => {
   activeTab.value = 'simples'
 }
 
-// Watch para preencher o formulário quando editar
 watch(() => props.inquilino, (newInquilino) => {
   if (newInquilino) {
     isEditMode.value = true
     activeTab.value = 'completo'
-    // Ao carregar para editar, formata os dados que vêm do banco (sem máscara)
     formData.value = {
       nome: newInquilino.nome || '',
-      cpf: formatCPF(newInquilino.cpf) || '', // Formata CPF ao carregar
-      telefone: formatPhone(newInquilino.telefone) || '', // Formata telefone ao carregar
+      cpf: formatCPF(newInquilino.cpf) || '',
+      telefone: formatPhone(newInquilino.telefone) || '',
       email: newInquilino.email || '',
       endereco: newInquilino.endereco || ''
     }
@@ -208,13 +203,11 @@ const validateForm = () => {
     return false
   }
   
-  // Valida telefone
   if (!validatePhone(formData.value.telefone)) {
     error.value = 'Telefone inválido'
     return false
   }
   
-  // Validação de CPF apenas se preenchido
   if (formData.value.cpf?.trim()) {
     if (!validateCpf(formData.value.cpf)) {
       error.value = 'CPF inválido'
@@ -233,16 +226,13 @@ const handleSubmit = async () => {
   try {
     loading.value = true
     
-    // ⭐ AQUI É A MÁGICA: Remove as máscaras antes de enviar ao backend
     const payload = {
       nome: formData.value.nome.trim(),
-      telefone: removePhoneMask(formData.value.telefone), // Remove máscara do telefone
-      cpf: formData.value.cpf?.trim() ? removeCpfMask(formData.value.cpf) : null, // Remove máscara do CPF
+      telefone: removePhoneMask(formData.value.telefone),
+      cpf: formData.value.cpf?.trim() ? removeCpfMask(formData.value.cpf) : null,
       email: formData.value.email?.trim() || null,
       endereco: formData.value.endereco?.trim() || null
     }
-
-    console.log('📤 Enviando payload:', payload)
 
     let response
     if (isEditMode.value) {
@@ -267,7 +257,6 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* Mantém todo o CSS original */
 .modal-overlay {
   position: fixed;
   top: 0;

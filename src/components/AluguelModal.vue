@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isOpen" class="modal-overlay" @click="closeModal">
+  <div v-if="isOpen" class="modal-overlay">
     <div class="modal-content" @click.stop>
       <div class="modal-header">
         <h2>{{ isEditMode ? 'Editar Aluguel' : 'Novo Aluguel' }}</h2>
@@ -31,61 +31,87 @@
             {{ error }}
           </div>
 
+          <!-- Inquilino com botão + -->
           <div class="form-group">
             <label for="inquilinoId">Inquilino *</label>
-            <div class="autocomplete-wrapper">
-              <input
-                type="text"
-                v-model="inquilinoSearch"
-                @focus="showInquilinoDropdown = true"
-                @input="filterInquilinos"
-                placeholder="Buscar inquilino por nome ou CPF..."
-              />
-              <div v-if="showInquilinoDropdown && filteredInquilinos.length > 0" class="dropdown">
+            <div class="input-with-button">
+              <div class="autocomplete-wrapper">
+                <input
+                  type="text"
+                  v-model="inquilinoSearch"
+                  @focus="showInquilinoDropdown = true"
+                  @input="filterInquilinos"
+                  placeholder="Buscar inquilino por nome ou CPF..."
+                />
+                <div v-if="showInquilinoDropdown && filteredInquilinos.length > 0" class="dropdown">
+                  <div
+                    v-for="inquilino in filteredInquilinos"
+                    :key="inquilino.id"
+                    @click="selectInquilino(inquilino)"
+                    class="dropdown-item"
+                  >
+                    {{ inquilino.nome }} - {{ inquilino.telefone }}
+                  </div>
+                </div>
                 <div
-                  v-for="inquilino in filteredInquilinos"
-                  :key="inquilino.id"
-                  @click="selectInquilino(inquilino)"
-                  class="dropdown-item"
+                  v-if="showInquilinoDropdown && filteredInquilinos.length === 0 && inquilinoSearch"
+                  class="dropdown"
                 >
-                  {{ inquilino.nome }} - {{ inquilino.telefone }}
+                  <div class="dropdown-item empty">Nenhum inquilino encontrado</div>
                 </div>
               </div>
-              <div
-                v-if="showInquilinoDropdown && filteredInquilinos.length === 0 && inquilinoSearch"
-                class="dropdown"
+              <button 
+                type="button" 
+                @click.stop="openInquilinoModal"
+                class="btn-add-inline"
+                title="Cadastrar novo inquilino"
               >
-                <div class="dropdown-item empty">Nenhum inquilino encontrado</div>
-              </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
             </div>
           </div>
 
+          <!-- Imóvel com botão + -->
           <div class="form-group">
             <label for="imovelId">Imóvel *</label>
-            <div class="autocomplete-wrapper">
-              <input
-                type="text"
-                v-model="imovelSearch"
-                @focus="showImovelDropdown = true"
-                @input="filterImoveis"
-                placeholder="Buscar imóvel por nome ou endereço..."
-              />
-              <div v-if="showImovelDropdown && filteredImoveis.length > 0" class="dropdown">
+            <div class="input-with-button">
+              <div class="autocomplete-wrapper">
+                <input
+                  type="text"
+                  v-model="imovelSearch"
+                  @focus="showImovelDropdown = true"
+                  @input="filterImoveis"
+                  placeholder="Buscar imóvel por nome ou endereço..."
+                />
+                <div v-if="showImovelDropdown && filteredImoveis.length > 0" class="dropdown">
+                  <div
+                    v-for="imovel in filteredImoveis"
+                    :key="imovel.id"
+                    @click="selectImovel(imovel)"
+                    class="dropdown-item"
+                  >
+                    {{ imovel.nome }} - {{ imovel.endereco }}
+                  </div>
+                </div>
                 <div
-                  v-for="imovel in filteredImoveis"
-                  :key="imovel.id"
-                  @click="selectImovel(imovel)"
-                  class="dropdown-item"
+                  v-if="showImovelDropdown && filteredImoveis.length === 0 && imovelSearch"
+                  class="dropdown"
                 >
-                  {{ imovel.nome }} - {{ imovel.endereco }}
+                  <div class="dropdown-item empty">Nenhum imóvel encontrado</div>
                 </div>
               </div>
-              <div
-                v-if="showImovelDropdown && filteredImoveis.length === 0 && imovelSearch"
-                class="dropdown"
+              <button 
+                type="button" 
+                @click.stop="openImovelModal"
+                class="btn-add-inline"
+                title="Cadastrar novo imóvel"
               >
-                <div class="dropdown-item empty">Nenhum imóvel encontrado</div>
-              </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
             </div>
           </div>
 
@@ -151,12 +177,27 @@
         </button>
       </div>
     </div>
+
+    <!-- Modais Inline -->
+    <InquilinoModalInline
+      :is-open="showInquilinoModal"
+      @close="closeInquilinoModal"
+      @success="handleInquilinoCreated"
+    />
+
+    <ImovelModalInline
+      :is-open="showImovelModal"
+      @close="closeImovelModal"
+      @success="handleImovelCreated"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { aluguelAPI, imovelAPI, inquilinoAPI, enumsAPI } from '@/api/services'
+import InquilinoModalInline from './InquilinoModalInline.vue'
+import ImovelModalInline from './ImovelModalInline.vue'
 
 const props = defineProps({
   isOpen: Boolean,
@@ -180,6 +221,10 @@ const inquilinoSearch = ref('')
 const imovelSearch = ref('')
 const showInquilinoDropdown = ref(false)
 const showImovelDropdown = ref(false)
+
+// Modais inline
+const showInquilinoModal = ref(false)
+const showImovelModal = ref(false)
 
 const formData = ref({
   inquilinoId: '',
@@ -283,6 +328,39 @@ const selectImovel = (imovel) => {
   showImovelDropdown.value = false
 }
 
+// Funções dos modais inline
+const openInquilinoModal = () => {
+  showInquilinoModal.value = true
+  showInquilinoDropdown.value = false
+}
+
+const closeInquilinoModal = () => {
+  showInquilinoModal.value = false
+}
+
+const handleInquilinoCreated = (novoInquilino) => {
+  inquilinos.value.unshift(novoInquilino)
+  filteredInquilinos.value = inquilinos.value
+  selectInquilino(novoInquilino)
+  closeInquilinoModal()
+}
+
+const openImovelModal = () => {
+  showImovelModal.value = true
+  showImovelDropdown.value = false
+}
+
+const closeImovelModal = () => {
+  showImovelModal.value = false
+}
+
+const handleImovelCreated = (novoImovel) => {
+  imoveis.value.unshift(novoImovel)
+  filteredImoveis.value = imoveis.value
+  selectImovel(novoImovel)
+  closeImovelModal()
+}
+
 const resetForm = () => {
   formData.value = {
     inquilinoId: '',
@@ -298,6 +376,9 @@ const resetForm = () => {
   showInquilinoDropdown.value = false
   showImovelDropdown.value = false
   error.value = ''
+  // Fechar modais inline ao resetar
+  showInquilinoModal.value = false
+  showImovelModal.value = false
 }
 
 const formatDateForInput = (dateString) => {
@@ -315,6 +396,10 @@ watch(
   (newValue) => {
     if (newValue) {
       loadSelectData()
+    } else {
+      // Quando fechar o modal principal, fechar os modais inline também
+      showInquilinoModal.value = false
+      showImovelModal.value = false
     }
   },
 )
@@ -334,7 +419,6 @@ watch(
         status: newAluguel.status || '',
       }
 
-      // Preencher os campos de busca com os valores selecionados
       if (newAluguel.inquilino) {
         inquilinoSearch.value = `${newAluguel.inquilino.nome}`
       } else if (newAluguel.inquilinoId) {
@@ -395,7 +479,6 @@ const validateForm = () => {
     return false
   }
 
-  // Validar se data fim é depois da data início
   if (new Date(formData.value.dataFim) <= new Date(formData.value.dataInicio)) {
     error.value = 'Data de fim deve ser posterior à data de início'
     return false
@@ -573,6 +656,16 @@ const handleSubmit = async () => {
   margin-bottom: 0.5rem;
 }
 
+.input-with-button {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.autocomplete-wrapper {
+  flex: 1;
+  position: relative;
+}
+
 .form-group input,
 .form-group select {
   width: 100%;
@@ -591,8 +684,27 @@ const handleSubmit = async () => {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.autocomplete-wrapper {
-  position: relative;
+.btn-add-inline {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.625rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-add-inline:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-add-inline svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .dropdown {
@@ -608,6 +720,7 @@ const handleSubmit = async () => {
   overflow-y: auto;
   z-index: 10;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 0.25rem;
 }
 
 .dropdown-item {
@@ -684,5 +797,11 @@ const handleSubmit = async () => {
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

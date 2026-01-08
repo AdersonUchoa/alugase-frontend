@@ -55,28 +55,7 @@
               <option value="1500-2000">R$ 1.500 - R$ 2.000</option>
               <option value="2000-3000">R$ 2.000 - R$ 3.000</option>
               <option value="3000+">Acima de R$ 3.000</option>
-              <option value="custom">Personalizado</option>
             </select>
-
-            <div v-if="modelValue.faixaValor === 'custom'" class="custom-value-inputs">
-              <input
-                :value="modelValue.valorMin"
-                @input="update('valorMin', Number($event.target.value))"
-                type="number"
-                placeholder="Valor mínimo"
-                min="0"
-                step="50"
-              />
-              <span class="date-separator">até</span>
-              <input
-                :value="modelValue.valorMax"
-                @input="update('valorMax', Number($event.target.value))"
-                type="number"
-                placeholder="Valor máximo"
-                min="0"
-                step="50"
-              />
-            </div>
           </div>
         </div>
 

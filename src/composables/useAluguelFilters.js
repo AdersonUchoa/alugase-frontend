@@ -1,4 +1,3 @@
-// composables/useAluguelFilters.js
 import { ref, computed } from 'vue'
 
 export function useAluguelFilters() {
@@ -6,8 +5,6 @@ export function useAluguelFilters() {
     periodoInicio: null,
     periodoFim: null,
     faixaValor: '',
-    valorMin: null,
-    valorMax: null,
     status: [],
     metodosPagamento: [],
   })
@@ -103,6 +100,17 @@ export function useAluguelFilters() {
   }
 
   const buildApiParams = (page, limit, searchTerm) => {
+    const faixas = {
+      '0-500': [0, 500],
+      '500-1000': [500, 1000],
+      '1000-1500': [1000, 1500],
+      '1500-2000': [1500, 2000],
+      '2000-3000': [2000, 3000],
+      '3000+': [3000, null],
+    }
+
+    const [valorMin, valorMax] = faixas[filters.value.faixaValor] || [null, null]
+
     return {
       page,
       limit,
@@ -112,8 +120,8 @@ export function useAluguelFilters() {
       search: searchTerm || null,
       periodoInicio: filters.value.periodoInicio || null,
       periodoFim: filters.value.periodoFim || null,
-      valorMin: filters.value.valorMin || null,
-      valorMax: filters.value.valorMax || null,
+      valorMin,
+      valorMax,
       status: filters.value.status.length > 0 ? filters.value.status : null,
       metodosPagamento:
         filters.value.metodosPagamento.length > 0 ? filters.value.metodosPagamento : null,

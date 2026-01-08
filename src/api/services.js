@@ -1,4 +1,5 @@
 import api from './auth'
+import qs from 'qs'
 
 // ==================== ENUMS ====================
 export const enumsAPI = {
@@ -61,17 +62,34 @@ export const inquilinoAPI = {
 
 // ==================== ALUGUÉIS ====================
 export const aluguelAPI = {
-  getAll: (
-    page = 1,
-    limit = 10,
-    includeInactive = false,
-    includeImoveis = false,
-    includeInquilinos = false,
-    search = null,
-  ) => {
-    const params = { page, limit, includeInactive, includeImoveis, includeInquilinos }
-    if (search) params.search = search
-    return api.get('/aluguel', { params })
+  getAll: (params = {}) => {
+    const defaultParams = {
+      page: 1,
+      limit: 10,
+      includeInactive: false,
+      includeImoveis: true,
+      includeInquilinos: true,
+      search: null,
+      periodoInicio: null,
+      periodoFim: null,
+      valorMin: null,
+      valorMax: null,
+      status: null,
+      metodosPagamento: null,
+    }
+
+    const finalParams = { ...defaultParams, ...params }
+
+    Object.keys(finalParams).forEach((key) => {
+      if (finalParams[key] === null || finalParams[key] === undefined || finalParams[key] === '') {
+        delete finalParams[key]
+      }
+    })
+
+    return api.get('/aluguel', {
+      params: finalParams,
+      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
+    })
   },
 
   getById: (id) => api.get(`/aluguel/${id}`),

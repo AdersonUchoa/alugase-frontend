@@ -60,14 +60,24 @@
                   <div class="dropdown-item empty">Nenhum inquilino encontrado</div>
                 </div>
               </div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 @click.stop="openInquilinoModal"
                 class="btn-add-inline"
                 title="Cadastrar novo inquilino"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                  />
                 </svg>
               </button>
             </div>
@@ -102,14 +112,24 @@
                   <div class="dropdown-item empty">Nenhum imóvel encontrado</div>
                 </div>
               </div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 @click.stop="openImovelModal"
                 class="btn-add-inline"
                 title="Cadastrar novo imóvel"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                  />
                 </svg>
               </button>
             </div>
@@ -132,11 +152,10 @@
               <label for="valor">Valor (R$) *</label>
               <input
                 id="valor"
-                v-model="formData.valor"
-                type="number"
-                step="0.01"
-                min="0"
-                placeholder="0.00"
+                v-model="valorFormatado"
+                type="text"
+                placeholder="R$ 0,00"
+                @input="onValorInput"
                 required
               />
             </div>
@@ -160,8 +179,7 @@
             <label for="status">Status *</label>
             <select id="status" v-model="formData.status" required>
               <option value="">Selecione...</option>
-              <option 
-                v-for="status in statusAluguel" :key="status.value" :value="status.value">
+              <option v-for="status in statusAluguel" :key="status.value" :value="status.value">
                 {{ status.label }}
               </option>
             </select>
@@ -210,6 +228,7 @@ const loading = ref(false)
 const loadingData = ref(false)
 const error = ref('')
 const isEditMode = ref(false)
+const valorFormatado = ref('')
 
 const metodosDePagamento = ref([])
 const statusAluguel = ref([])
@@ -230,10 +249,28 @@ const formData = ref({
   imovelId: '',
   dataInicio: '',
   dataFim: '',
-  valor: '',
+  valor: 0,
   metodoDePagamento: '',
   status: '',
 })
+
+const formatarMoeda = (valor) => {
+  if (valor === null || valor === undefined || isNaN(valor)) return 'R$ 0,00'
+
+  return valor.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })
+}
+
+const onValorInput = (event) => {
+  const apenasNumeros = event.target.value.replace(/\D/g, '')
+
+  const valorNumerico = Number(apenasNumeros) / 100
+
+  formData.value.valor = valorNumerico
+  valorFormatado.value = formatarMoeda(valorNumerico)
+}
 
 const loadMetodosDePagamento = async () => {
   try {
@@ -364,10 +401,11 @@ const resetForm = () => {
     imovelId: '',
     dataInicio: '',
     dataFim: '',
-    valor: '',
+    valor: 0,
     metodoDePagamento: '',
     status: '',
   }
+  valorFormatado.value = ''
   inquilinoSearch.value = ''
   imovelSearch.value = ''
   showInquilinoDropdown.value = false
@@ -405,14 +443,16 @@ watch(
     if (newAluguel) {
       isEditMode.value = true
       formData.value = {
-        inquilinoId: newAluguel.inquilinoId || '',
-        imovelId: newAluguel.imovelId || '',
-        dataInicio: formatDateForInput(newAluguel.dataInicio) || '',
-        dataFim: formatDateForInput(newAluguel.dataFim) || '',
-        valor: newAluguel.valor || '',
-        metodoDePagamento: newAluguel.metodoDePagamento || '',
-        status: newAluguel.status || '',
+        inquilinoId: newAluguel.inquilinoId ?? '',
+        imovelId: newAluguel.imovelId ?? '',
+        dataInicio: formatDateForInput(newAluguel.dataInicio) ?? '',
+        dataFim: formatDateForInput(newAluguel.dataFim) ?? '',
+        valor: newAluguel.valor ?? 0,
+        metodoDePagamento: newAluguel.metodoDePagamento ?? '',
+        status: newAluguel.status ?? '',
       }
+
+      valorFormatado.value = formatarMoeda(newAluguel.valor ?? 0)
 
       if (newAluguel.inquilino) {
         inquilinoSearch.value = `${newAluguel.inquilino.nome}`
@@ -499,7 +539,7 @@ const handleSubmit = async () => {
       metodoDePagamento: formData.value.metodoDePagamento,
       status: formData.value.status,
     }
-    
+
     let response
     if (isEditMode.value) {
       response = await aluguelAPI.update(props.aluguel.id, payload)

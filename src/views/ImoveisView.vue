@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <Navbar />
-    
+
     <main class="content">
       <div class="page-header">
         <div>
@@ -9,8 +9,18 @@
           <p>Gerencie os imóveis cadastrados</p>
         </div>
         <button @click="openCreateModal" class="btn-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           Novo Imóvel
         </button>
@@ -20,8 +30,18 @@
       <div class="dashboard-cards">
         <div class="dashboard-card">
           <div class="card-icon blue">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
             </svg>
           </div>
           <div class="card-content">
@@ -33,10 +53,10 @@
 
       <!-- Barra de Busca -->
       <div class="search-bar">
-        <input 
-          v-model="searchTerm" 
+        <input
+          v-model="searchTerm"
           @input="handleSearch"
-          type="text" 
+          type="text"
           placeholder="Buscar por nome ou endereço..."
         />
       </div>
@@ -65,21 +85,56 @@
             </div>
             <div class="item-footer">
               <button @click="viewDetails(imovel.id)" class="btn-view">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
                 </svg>
                 Detalhes
               </button>
               <button @click="openEditModal(imovel)" class="btn-edit">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
                 </svg>
                 Editar
               </button>
               <button @click="handleDelete(imovel.id)" class="btn-delete">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
                 Excluir
               </button>
@@ -89,16 +144,16 @@
 
         <!-- Paginação -->
         <div class="pagination" v-if="totalPages > 1">
-          <button 
-            @click="changePage(currentPage - 1)" 
+          <button
+            @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
             class="btn-page"
           >
             Anterior
           </button>
           <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
-          <button 
-            @click="changePage(currentPage + 1)" 
+          <button
+            @click="changePage(currentPage + 1)"
             :disabled="currentPage === totalPages"
             class="btn-page"
           >
@@ -109,8 +164,8 @@
     </main>
 
     <!-- Modal -->
-    <ImovelModal 
-      :is-open="showModal" 
+    <ImovelModal
+      :is-open="showModal"
       :imovel="selectedImovel"
       @close="closeModal"
       @success="handleModalSuccess"
@@ -130,7 +185,7 @@ const imoveis = ref([])
 const searchTerm = ref('')
 const currentPage = ref(1)
 const totalPages = ref(1)
-const limit = ref(9)
+const limit = ref(10)
 
 const loadDashboardCounts = async () => {
   try {
@@ -147,11 +202,11 @@ const loadImoveis = async () => {
   try {
     loading.value = true
     const response = await imovelAPI.getAll(
-      currentPage.value, 
-      limit.value, 
-      false, 
-      false, 
-      searchTerm.value || null
+      currentPage.value,
+      limit.value,
+      false,
+      false,
+      searchTerm.value || null,
     )
 
     if (response.data.success) {
@@ -365,7 +420,9 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .empty-state {
@@ -441,7 +498,7 @@ onMounted(() => {
 }
 
 .btn-view,
-.btn-edit, 
+.btn-edit,
 .btn-delete {
   display: flex;
   align-items: center;
@@ -485,7 +542,7 @@ onMounted(() => {
 }
 
 .btn-view svg,
-.btn-edit svg, 
+.btn-edit svg,
 .btn-delete svg {
   width: 1rem;
   height: 1rem;

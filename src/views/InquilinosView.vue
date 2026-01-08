@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <Navbar />
-    
+
     <main class="content">
       <div class="page-header">
         <div>
@@ -9,8 +9,18 @@
           <p>Gerencie os inquilinos cadastrados</p>
         </div>
         <button @click="openCreateModal" class="btn-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           Novo Inquilino
         </button>
@@ -19,9 +29,18 @@
       <div class="dashboard-cards">
         <div class="dashboard-card">
           <div class="card-icon green">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
             </svg>
           </div>
           <div class="card-content">
@@ -33,10 +52,10 @@
 
       <!-- Barra de Busca -->
       <div class="search-bar">
-        <input 
-          v-model="searchTerm" 
+        <input
+          v-model="searchTerm"
           @input="handleSearch"
-          type="text" 
+          type="text"
           placeholder="Buscar por nome, CPF, email ou telefone..."
         />
       </div>
@@ -57,8 +76,18 @@
           <div v-for="inquilino in inquilinos" :key="inquilino.id" class="item-card">
             <div class="item-header">
               <div class="avatar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
                 </svg>
               </div>
               <div class="header-info">
@@ -82,21 +111,56 @@
             </div>
             <div class="item-footer">
               <button @click="viewDetails(inquilino.id)" class="btn-view">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
                 </svg>
                 Detalhes
               </button>
               <button @click="openEditModal(inquilino)" class="btn-edit">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
                 </svg>
                 Editar
               </button>
               <button @click="handleDelete(inquilino.id)" class="btn-delete">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
                 Excluir
               </button>
@@ -106,16 +170,16 @@
 
         <!-- Paginação -->
         <div class="pagination" v-if="totalPages > 1">
-          <button 
-            @click="changePage(currentPage - 1)" 
+          <button
+            @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
             class="btn-page"
           >
             Anterior
           </button>
           <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
-          <button 
-            @click="changePage(currentPage + 1)" 
+          <button
+            @click="changePage(currentPage + 1)"
             :disabled="currentPage === totalPages"
             class="btn-page"
           >
@@ -126,8 +190,8 @@
     </main>
 
     <!-- Modal -->
-    <InquilinoModal 
-      :is-open="showModal" 
+    <InquilinoModal
+      :is-open="showModal"
       :inquilino="selectedInquilino"
       @close="closeModal"
       @success="handleModalSuccess"
@@ -141,13 +205,12 @@ import Navbar from '@/components/Navbar.vue'
 import InquilinoModal from '@/components/InquilinoModal.vue'
 import { inquilinoAPI } from '@/api/services'
 
-
 const loading = ref(false)
 const inquilinos = ref([])
 const searchTerm = ref('')
 const currentPage = ref(1)
 const totalPages = ref(1)
-const limit = ref(9)
+const limit = ref(10)
 const dashboardCounts = ref({})
 
 const loadDashboardCounts = async () => {
@@ -165,11 +228,11 @@ const loadInquilinos = async () => {
   try {
     loading.value = true
     const response = await inquilinoAPI.getAll(
-      currentPage.value, 
-      limit.value, 
-      false, 
-      false, 
-      searchTerm.value || null
+      currentPage.value,
+      limit.value,
+      false,
+      false,
+      searchTerm.value || null,
     )
 
     if (response.data.success) {
@@ -383,7 +446,9 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .empty-state {
@@ -492,7 +557,7 @@ onMounted(() => {
 }
 
 .btn-view,
-.btn-edit, 
+.btn-edit,
 .btn-delete {
   display: flex;
   align-items: center;
@@ -536,7 +601,7 @@ onMounted(() => {
 }
 
 .btn-view svg,
-.btn-edit svg, 
+.btn-edit svg,
 .btn-delete svg {
   width: 1rem;
   height: 1rem;

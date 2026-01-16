@@ -50,7 +50,6 @@
         </div>
       </div>
 
-      <!-- Barra de Busca -->
       <div class="search-bar">
         <input
           v-model="searchTerm"
@@ -60,13 +59,11 @@
         />
       </div>
 
-      <!-- Loading -->
       <div v-if="loading" class="loading">
         <div class="spinner"></div>
         <p>Carregando inquilinos...</p>
       </div>
 
-      <!-- Lista de Inquilinos -->
       <div v-else>
         <div v-if="inquilinos.length === 0" class="empty-state">
           <p>Nenhum inquilino encontrado</p>
@@ -168,7 +165,6 @@
           </div>
         </div>
 
-        <!-- Paginação -->
         <div class="pagination" v-if="totalPages > 1">
           <button
             @click="changePage(currentPage - 1)"
@@ -189,7 +185,6 @@
       </div>
     </main>
 
-    <!-- Modal -->
     <InquilinoModal
       :is-open="showModal"
       :inquilino="selectedInquilino"
@@ -201,10 +196,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import Navbar from '@/components/Navbar.vue'
 import InquilinoModal from '@/components/InquilinoModal.vue'
 import { inquilinoAPI } from '@/api/services'
 
+const router = useRouter()
 const loading = ref(false)
 const inquilinos = ref([])
 const searchTerm = ref('')
@@ -292,6 +289,10 @@ const handleDelete = async (id) => {
     console.error('❌ Erro ao excluir:', error)
     alert('Erro ao excluir inquilino')
   }
+}
+
+const viewDetails = (id) => {
+  router.push(`/inquilinos/${id}`)
 }
 
 onMounted(() => {

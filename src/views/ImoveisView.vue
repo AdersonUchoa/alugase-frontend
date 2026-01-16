@@ -26,7 +26,6 @@
         </button>
       </div>
 
-      <!-- Dashboard Cards -->
       <div class="dashboard-cards">
         <div class="dashboard-card">
           <div class="card-icon blue">
@@ -51,7 +50,6 @@
         </div>
       </div>
 
-      <!-- Barra de Busca -->
       <div class="search-bar">
         <input
           v-model="searchTerm"
@@ -61,13 +59,11 @@
         />
       </div>
 
-      <!-- Loading -->
       <div v-if="loading" class="loading">
         <div class="spinner"></div>
         <p>Carregando imóveis...</p>
       </div>
 
-      <!-- Lista de Imóveis -->
       <div v-else>
         <div v-if="imoveis.length === 0" class="empty-state">
           <p>Nenhum imóvel encontrado</p>
@@ -142,7 +138,6 @@
           </div>
         </div>
 
-        <!-- Paginação -->
         <div class="pagination" v-if="totalPages > 1">
           <button
             @click="changePage(currentPage - 1)"
@@ -163,7 +158,6 @@
       </div>
     </main>
 
-    <!-- Modal -->
     <ImovelModal
       :is-open="showModal"
       :imovel="selectedImovel"
@@ -175,11 +169,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import Navbar from '@/components/Navbar.vue'
 import ImovelModal from '@/components/ImovelModal.vue'
 import { imovelAPI } from '@/api/services'
 const dashboardCounts = ref({})
 
+const router = useRouter()
 const loading = ref(false)
 const imoveis = ref([])
 const searchTerm = ref('')
@@ -266,6 +262,10 @@ const handleDelete = async (id) => {
     console.error('❌ Erro ao excluir:', error)
     alert('Erro ao excluir imóvel')
   }
+}
+
+const viewDetails = (id) => {
+  router.push(`/imoveis/${id}`)
 }
 
 onMounted(() => {
